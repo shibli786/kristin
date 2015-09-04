@@ -104,6 +104,13 @@ describe Kristin do
         doc = IO.read(@target_file)
         doc.should include("DATA_DIR_WORKS")
       end
+
+      it "should be possible to specify split_pages" do
+        Kristin::Converter.new(@multi_page_pdf, @target_file, { split_pages: true }).convert
+        doc = IO.read(@target_file)
+        doc.should include("data-page-no=\"5\" data-page-url=\"multi5.page\"")
+        (1..10).each { |num| FileUtils.rm "multi#{num}.page" }
+      end
     end
   end
 
