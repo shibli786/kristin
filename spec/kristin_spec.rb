@@ -84,7 +84,7 @@ describe Kristin do
       it "should be possible to specify hdpi and vdpi" do
         Kristin::Converter.new(@one_page_pdf, @target_file, { hdpi: 0, vdpi: 0 }).convert
         doc = IO.read(@target_file)
-        doc.should include("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAAAAAAAAAAHqZRakAAAADElEQVQI12M4dugAAASaAkndTfHQAAAAAElFTkSuQmCC") 
+        doc.should include("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAAAAAAAAAAHqZRakAAAADElEQVQI12M4dugAAASaAkndTfHQAAAAAElFTkSuQmCC")
       end
 
       it "should be possible to specify zoom ratio" do
@@ -97,6 +97,19 @@ describe Kristin do
         Kristin::Converter.new(@one_page_pdf, @target_file, { fit_width: 1024, fit_height: 1024 }).convert
         doc = IO.read(@target_file)
         doc.should include("1.293109")
+      end
+
+      it "should be possible to specify data_dir" do
+        Kristin::Converter.new(@one_page_pdf, @target_file, { data_dir: 'spec/fixtures/data_dir' }).convert
+        doc = IO.read(@target_file)
+        doc.should include("DATA_DIR_WORKS")
+      end
+
+      it "should be possible to specify split_pages" do
+        Kristin::Converter.new(@multi_page_pdf, @target_file, { split_pages: true }).convert
+        doc = IO.read(@target_file)
+        doc.should include("data-page-no=\"5\" data-page-url=\"multi5.page\"")
+        (1..10).each { |num| FileUtils.rm "multi#{num}.page" }
       end
     end
   end

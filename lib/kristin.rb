@@ -35,6 +35,8 @@ module Kristin
       opts.push("--zoom #{@options[:zoom]}") if @options[:zoom]
       opts.push("--fit-width #{@options[:fit_width]}") if @options[:fit_width]
       opts.push("--fit-height #{@options[:fit_height]}") if @options[:fit_height]
+      opts.push("--split-pages 1") if @options[:split_pages]
+      opts.push("--data-dir #{@options[:data_dir]}") if @options[:data_dir]
       opts.join(" ")
     end
 
