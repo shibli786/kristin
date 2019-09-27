@@ -37,6 +37,8 @@ module Kristin
       opts.push("--fit-height #{@options[:fit_height]}") if @options[:fit_height]
       opts.push("--split-pages 1") if @options[:split_pages]
       opts.push("--data-dir #{@options[:data_dir]}") if @options[:data_dir]
+      opts.push("--process-form #{@options[:process_form]}") if @options[:process_form]
+
       opts.join(" ")
     end
 
@@ -72,7 +74,6 @@ module Kristin
           saved_file.write(read_file.read)
         end
       end
-
       tmp_file
     end
 
