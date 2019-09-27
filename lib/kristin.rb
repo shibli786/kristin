@@ -38,7 +38,8 @@ module Kristin
       opts.push("--split-pages 1") if @options[:split_pages]
       opts.push("--data-dir #{@options[:data_dir]}") if @options[:data_dir]
       opts.push("--process-form #{@options[:process_form]}") if @options[:process_form]
-
+      opts.push("--dest-dir #{@options[:dest_dir]}") if @options[:dest_dir]
+      opts.push("--debug #{@options[:debug]}") if @options[:debug]  
       opts.join(" ")
     end
 
