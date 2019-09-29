@@ -28,9 +28,13 @@ module Kristin
     def process_options
       opts = []
       @options.each do |key,value|
-        opts.push(['--',key.to_s.split("_").join('-'),value].join(" "))
+        if key.to_s.length == 1
+         opts.push(["-#{key.to_s}",value].join(" "))
+        else
+          opts.push(["--#{key.to_s.split("_").join('-')}",value].join(" "))
+        end
       end
-        
+     
       # opts.push("--process-outline 0") if @options[:process_outline] == false
       # opts.push("--first-page #{@options[:first_page]}") if @options[:first_page]
       # opts.push("--last-page #{@options[:last_page]}") if @options[:last_page]
