@@ -27,19 +27,23 @@ module Kristin
 
     def process_options
       opts = []
-      opts.push("--process-outline 0") if @options[:process_outline] == false
-      opts.push("--first-page #{@options[:first_page]}") if @options[:first_page]
-      opts.push("--last-page #{@options[:last_page]}") if @options[:last_page]
-      opts.push("--hdpi #{@options[:hdpi]}") if @options[:hdpi]
-      opts.push("--vdpi #{@options[:vdpi]}") if @options[:vdpi]
-      opts.push("--zoom #{@options[:zoom]}") if @options[:zoom]
-      opts.push("--fit-width #{@options[:fit_width]}") if @options[:fit_width]
-      opts.push("--fit-height #{@options[:fit_height]}") if @options[:fit_height]
-      opts.push("--split-pages 1") if @options[:split_pages]
-      opts.push("--data-dir #{@options[:data_dir]}") if @options[:data_dir]
-      opts.push("--process-form #{@options[:process_form]}") if @options[:process_form]
-      opts.push("--dest-dir #{@options[:dest_dir]}") if @options[:dest_dir]
-      opts.push("--debug #{@options[:debug]}") if @options[:debug]  
+      @options.each do |key,value|
+        opts.push(['--',key.to_s.split("_").join('-'),value].join(" "))
+      end
+        
+      # opts.push("--process-outline 0") if @options[:process_outline] == false
+      # opts.push("--first-page #{@options[:first_page]}") if @options[:first_page]
+      # opts.push("--last-page #{@options[:last_page]}") if @options[:last_page]
+      # opts.push("--hdpi #{@options[:hdpi]}") if @options[:hdpi]
+      # opts.push("--vdpi #{@options[:vdpi]}") if @options[:vdpi]
+      # opts.push("--zoom #{@options[:zoom]}") if @options[:zoom]
+      # opts.push("--fit-width #{@options[:fit_width]}") if @options[:fit_width]
+      # opts.push("--fit-height #{@options[:fit_height]}") if @options[:fit_height]
+      # opts.push("--split-pages 1") if @options[:split_pages]
+      # opts.push("--data-dir #{@options[:data_dir]}") if @options[:data_dir]
+      # opts.push("--process-form #{@options[:process_form]}") if @options[:process_form]
+      # opts.push("--dest-dir #{@options[:dest_dir]}") if @options[:dest_dir]
+      # opts.push("--debug #{@options[:debug]}") if @options[:debug]  
       opts.join(" ")
     end
 
