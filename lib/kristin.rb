@@ -5,10 +5,12 @@ require "spoon"
 
 module Kristin
   class Converter
-    def initialize(source, target, options = {})
+    def initialize(source, target, options = {},docker_options={})
       @options = options
       @source = source
       @target = target
+      @docker_options = docker_options
+      # @destination_path = docker_options[:mountable_dir_path].present? ? docker_options[:mountable_dir_path] : "/tmp"
     end
 
     def convert
@@ -21,6 +23,7 @@ module Kristin
       
       ## TODO: Grab error message from pdf2htmlex and raise a better error
       raise IOError, "Could not convert #{src}" if $?.exitstatus != 0
+
     end
 
     private
@@ -34,20 +37,6 @@ module Kristin
           opts.push(["--#{key.to_s.split("_").join('-')}",value].join(" "))
         end
       end
-     
-      # opts.push("--process-outline 0") if @options[:process_outline] == false
-      # opts.push("--first-page #{@options[:first_page]}") if @options[:first_page]
-      # opts.push("--last-page #{@options[:last_page]}") if @options[:last_page]
-      # opts.push("--hdpi #{@options[:hdpi]}") if @options[:hdpi]
-      # opts.push("--vdpi #{@options[:vdpi]}") if @options[:vdpi]
-      # opts.push("--zoom #{@options[:zoom]}") if @options[:zoom]
-      # opts.push("--fit-width #{@options[:fit_width]}") if @options[:fit_width]
-      # opts.push("--fit-height #{@options[:fit_height]}") if @options[:fit_height]
-      # opts.push("--split-pages 1") if @options[:split_pages]
-      # opts.push("--data-dir #{@options[:data_dir]}") if @options[:data_dir]
-      # opts.push("--process-form #{@options[:process_form]}") if @options[:process_form]
-      # opts.push("--dest-dir #{@options[:dest_dir]}") if @options[:dest_dir]
-      # opts.push("--debug #{@options[:debug]}") if @options[:debug]  
       opts.join(" ")
     end
 
@@ -57,8 +46,33 @@ module Kristin
 
     def pdf2htmlex_command
       cmd = nil
-      cmd = "pdf2htmlex" if which("pdf2htmlex")
-      cmd = "pdf2htmlEX" if which("pdf2htmlEX")
+      # cmd = "pdf2htmlex" if which("pdf2htmlex")
+      # cmd = "pdf2htmlEX" if which("pdf2htmlEX")
+      cmd = run_docker if cmd.blank? && docker_available? 
+      cmd
+    end
+
+    def run_docker
+      # `alias pdf2htmlExDocker="sudo docker run -t  -v /tmp:/tmp  -v #{destination_path}:/pdf2htmlEx 16a71a928414 pdf2htmlEX"`
+      command("docker pull #{docker_image}:latest")
+      "sudo docker run -t  -v /tmp:/tmp  -v #{destination_path}:/pdf2htmlEX #{docker_image} pdf2htmlEX"
+    end
+
+    def docker_available?
+      docker_command
+    end
+
+    def docker_command
+      cmd = nil
+      cmd = "docker" if which("docker")
+    end
+
+    def destination_path
+      @docker_options[:mountable_dir_path]
+    end
+
+    def docker_image
+       @docker_options[:image_name]
     end
 
     def which(cmd)
@@ -71,6 +85,7 @@ module Kristin
         end
       return nil
     end
+
 
     def random_source_name
       rand(16**16).to_s(16)
