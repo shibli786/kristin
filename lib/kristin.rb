@@ -111,7 +111,7 @@ module Kristin
     end
   end
 
-  def self.convert(source, target, options = {})
-    Converter.new(source, target, options).convert
+  def self.convert(source, target, options = {},docker_options={})
+    Converter.new(source, target, options,docker_options).convert
   end
 end
