@@ -54,7 +54,7 @@ module Kristin
 
     def run_docker
       # `alias pdf2htmlExDocker="sudo docker run -t  -v /tmp:/tmp  -v #{destination_path}:/pdf2htmlEx 16a71a928414 pdf2htmlEX"`
-      command("docker pull #{docker_image}:latest")
+      system("docker pull #{docker_image}:latest")
       "sudo docker run -t  -v /tmp:/tmp  -v #{destination_path}:/pdf2htmlEX #{docker_image} pdf2htmlEX"
     end
 
