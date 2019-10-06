@@ -55,8 +55,8 @@ module Kristin
     def run_docker
      #`alias pdf2htmlExDocker="sudo docker run -t  -v /tmp:/tmp  -v #{destination_path}:/pdf2htmlEx 16a71a928414 pdf2htmlEX"`
      # system("sudo docker pull #{docker_image}:latest")
-     puts  "docker run -t  -v /tmp:/tmp  -v #{destination_path}:/pdf2htmlEx #{docker_image} pdf2htmlEX"
-      "docker run -t  -v /tmp:/tmp  -v #{destination_path}:/pdf2htmlEx #{docker_image} pdf2htmlEX"
+     puts  "Running docker run -t  -v /tmp:/tmp  -v #{destination_path}:/pdf2htmlEx #{docker_image} pdf2htmlEX"
+      system("docker run -t  -v /tmp:/tmp  -v #{destination_path}:/pdf2htmlEx #{docker_image} pdf2htmlEX")
     end
 
     def docker_available?
