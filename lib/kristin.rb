@@ -21,11 +21,8 @@ module Kristin
       args = [pdf2htmlex_command, opts, src, @target].flatten
       pid = Spoon.spawnp(*args)
       Process.waitpid(pid)
-      byebug
-      
-      ## TODO: Grab error message from pdf2htmlex and raise a better error
 
-      puts "PATH    #{Dir.pwd}"
+      ## TODO: Grab error message from pdf2htmlex and raise a better error
       raise IOError, "Could not convert #{src}" if $?.exitstatus != 0
 
     end
@@ -57,9 +54,14 @@ module Kristin
     end
 
     def run_docker
-     #`alias pdf2htmlExDocker="sudo docker run -t  -v /tmp:/tmp  -v #{destination_path}:/pdf2htmlEx 16a71a928414 pdf2htmlEX"`
-     # system("sudo docker pull #{docker_image}:latest")
-     puts  "Running docker run -t  -v /tmp:/tmp  -v #{destination_path}:/pdf2htmlEx #{docker_image} pdf2htmlEX"
+      puts "Pulling Docker Image "   if @docker_options[:debug]
+
+      puts "docker pull #{docker_image}:latest"  if @docker_options[:debug]
+
+      system("sudo docker pull #{docker_image}:latest")
+
+      puts  "Running docker run -t  -v /tmp:/tmp  -v #{destination_path}:/pdf2htmlEx #{docker_image} pdf2htmlEX" if @docker_options[:debug]
+     
       "docker run -t  -v /tmp:/tmp  -v #{destination_path}:/pdf2htmlEx #{docker_image} pdf2htmlEX".split(" ")
     end
 
