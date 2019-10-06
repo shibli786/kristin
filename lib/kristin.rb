@@ -15,11 +15,13 @@ module Kristin
 
     def convert
       raise IOError, "Can't find pdf2htmlex executable in PATH" if not command_available?
+
       src = determine_source(@source)
       opts = process_options.split(" ")
       args = [pdf2htmlex_command, opts, src, @target].flatten
       pid = Spoon.spawnp(*args)
       Process.waitpid(pid)
+      byebug
       
       ## TODO: Grab error message from pdf2htmlex and raise a better error
 
