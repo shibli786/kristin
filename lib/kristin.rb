@@ -58,7 +58,7 @@ module Kristin
 
       puts "docker pull #{docker_image}:latest"  if @docker_options[:debug]
 
-      system("sudo docker pull #{docker_image}:latest")
+      system("docker pull #{docker_image}:latest")
 
       puts  "Running docker run -t  -v /tmp:/tmp  -v #{destination_path}:/pdf2htmlEx #{docker_image} pdf2htmlEX" if @docker_options[:debug]
      
