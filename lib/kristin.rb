@@ -62,7 +62,7 @@ module Kristin
 
       puts  "Running docker run -t  -v /tmp:/tmp  -v #{destination_path}:/pdf2htmlEx #{docker_image} pdf2htmlEX" if @docker_options[:debug]
      
-      "docker run -t  -v /tmp:/tmp  -v #{destination_path}:/pdf2htmlEx #{docker_image} pdf2htmlEX".split(" ")
+      "docker run -t  -v /tmp:/tmp  -v #{destination_path}:/#{volume} #{docker_image} pdf2htmlEX".split(" ")
     end
 
     def docker_available?
@@ -76,6 +76,10 @@ module Kristin
 
     def destination_path
       @docker_options[:mountable_dir_path]
+    end
+
+    def volume
+      @docker_options[:mountable_volume]
     end
 
     def docker_image
